@@ -1,4 +1,4 @@
-# PhotoDrive-iOS
+# Photo Drive iOS
 ## Sync your photos straight to Google Drive
 
 The current way Google has automatic photo backup is through the Google+ app
