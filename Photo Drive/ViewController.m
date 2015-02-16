@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 static NSString *const kPhotosFolder = @"Phone_Upload";
+static NSString *const kAutoCompleteOn = @"kAutoCompleteOn";
 static NSString *const kCompleted = @"kCompleted";
 static NSString *const kKeychainItemName = @"Photo Drive";
 static NSString *const kClientID = @"CLIENT_ID";
@@ -20,6 +21,11 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
 {
     [super viewDidLoad];
     
+    _defaults = [NSUserDefaults standardUserDefaults];
+    _autoBackupOn = [_defaults boolForKey:kAutoCompleteOn];
+    [_autoBackupSwitch setOn:_autoBackupOn];
+    [_backupButton setHidden:_autoBackupOn];
+    
     // Initialize the drive service & load existing credentials from the keychain if available
     _driveService = [[GTLServiceDrive alloc] init];
     _driveService.authorizer = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:kKeychainItemName
@@ -28,18 +34,33 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
     
     _syncLock = [[NSCondition alloc] init];
     _isSyncing = NO;
+    
+    _dateFormat = [[NSDateFormatter alloc] init];
+    [_dateFormat setDateFormat:@"YYYY-MM-dd HH.mm.ss"];
+    
+    _numAssets = @0;
+    _numUploadedAssets = @0;
+    
+    [_totalAssetsLabel setText:[_numAssets stringValue]];
+    [_uplodadedAssetsLabel setText:[_numUploadedAssets stringValue]];
+    
+    [_progressView  setProgress:0.0];
+    
+    _assetQueue = [[NSMutableArray alloc] init];
+    _assetLibrary = [[ALAssetsLibrary alloc] init];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [[self view] setBackgroundColor:[UIColor whiteColor]];
-    
     if (![self isAuthorized]) {
         // Request authorization
-        [self pushViewController:[self createAuthController] animated:YES];
+        [self presentViewController:[self createAuthController] animated:YES completion:nil];
     } else {
-        // Start the sync
-        [self initSync];
+        if (_autoBackupOn) {
+            // Start the sync
+            [self initBackup:self];
+        }
     }
 }
 
@@ -74,11 +95,13 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
         _driveService.authorizer = nil;
     } else {
         _driveService.authorizer = authResult;
-        [self initSync];
+        if (_autoBackupOn) {
+            [self initBackup:self];
+        }
     }
 }
 
-- (void)initSync
+- (IBAction)initBackup:(id)sender
 {
     @synchronized(self) {
         if (_isSyncing) {
@@ -86,23 +109,6 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
         }
         _isSyncing = YES;
         NSLog(@"BEGINNING SYNC.");
-    }
-
-    if (!_defaults) {
-        _defaults = [NSUserDefaults standardUserDefaults];
-    }
-    
-    if (!_assetQueue) {
-        _assetQueue = [[NSMutableArray alloc] init];
-    }
-    
-    if (!_dateFormat) {
-        _dateFormat = [[NSDateFormatter alloc] init];
-        [_dateFormat setDateFormat:@"YYYY-MM-dd HH.mm.ss"];
-    }
-    
-    if (!_assetLibrary) {
-        _assetLibrary = [[ALAssetsLibrary alloc] init];
     }
     
     if (!_folderIdentifier) {
@@ -174,10 +180,13 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
 
 - (void)getAssets
 {
+    _numUploadedAssets = @0;
+    _numAssets = @0;
     [_assetLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos
         usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
                 if (asset) {
+                    _numAssets = [NSNumber numberWithInt:_numAssets.intValue + 1];
                     NSString *filename = [[asset defaultRepresentation] filename];
                     __block BOOL previouslyBackup;
                     dispatch_sync(dispatch_get_main_queue(), ^{
@@ -185,9 +194,22 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
                     });
                     if (!previouslyBackup) {
                         [_assetQueue addObject:[asset valueForProperty:ALAssetPropertyAssetURL]];
+                    } else {
+                        _numUploadedAssets = [NSNumber numberWithInt:_numUploadedAssets.intValue + 1];
                     }
                 }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_totalAssetsLabel setText:[_numAssets stringValue]];
+                    [_uplodadedAssetsLabel setText:[_numUploadedAssets stringValue]];
+                    NSLog(@"Progress: %f", _numUploadedAssets.doubleValue / _numAssets.doubleValue);
+                    [_progressView  setProgress:_numUploadedAssets.doubleValue / _numAssets.doubleValue];
+                });
             }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_totalAssetsLabel setText:[NSString stringWithFormat:@"%d", _numAssets.intValue]];
+                [_uplodadedAssetsLabel setText:[NSString stringWithFormat:@"%d", _numUploadedAssets.intValue]];
+            });
             [self uploadAssets];
         } failureBlock:^(NSError *error) {
             if (error.code == ALAssetsLibraryAccessUserDeniedError) {
@@ -244,6 +266,8 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
         }
         // Pop the last asset off the queue and loop
         for (int t = 0; t < maxThreads; t++) {
+            _numUploadedAssets = [NSNumber numberWithInt:_numUploadedAssets.intValue + 1];
+            [_progressView  setProgress:_numUploadedAssets.doubleValue / _numAssets.doubleValue];
             [_assetQueue removeObjectAtIndex:0];
         }
         [_syncLock unlock];
@@ -286,7 +310,6 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
                                                           NSError *error) {
         if (error == nil) {
             NSLog(@"Uploaded %@", filename);
-            // Save to UserDefaults on the main thread
             [_defaults setBool:YES forKey:filename];
             [_defaults synchronize];
         } else {
@@ -312,4 +335,13 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
     [alert show];
 }
 
+- (IBAction)autoBackupToggled:(id)sender
+{
+    _autoBackupOn = [_autoBackupSwitch isOn];
+    [_backupButton setHidden:_autoBackupOn];
+    @synchronized(_defaults) {
+        [_defaults setBool:_autoBackupOn forKey:kAutoCompleteOn];
+        [_defaults synchronize];
+    }
+}
 @end

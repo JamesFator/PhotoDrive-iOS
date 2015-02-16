@@ -1,25 +1,207 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                    <view key="view" contentMode="scaleAspectFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <progressView opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="y5b-F2-7sa">
+                                <rect key="frame" x="16" y="28" width="568" height="2"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="368" id="gwN-xX-oKq"/>
+                                </constraints>
+                                <color key="progressTintColor" red="0.0" green="0.77121350359999996" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gwN-xX-oKq"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="16" y="28" width="368" height="2"/>
+                                    <mask key="constraints">
+                                        <include reference="gwN-xX-oKq"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="16" y="28" width="768" height="2"/>
+                                </variation>
+                            </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="wordWrap" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wxu-9Z-v2L">
+                                <rect key="frame" x="200" y="453" width="200" height="60"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="BACKUP NOW">
+                                            <attributes>
+                                                <font key="NSFont" size="20" name="HelveticaNeue"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="100" y="453" width="200" height="60"/>
+                                </variation>
+                                <connections>
+                                    <action selector="initBackup:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="dQd-vF-XDO"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="JvV-gP-J2J">
+                                <rect key="frame" x="276" y="549" width="51" height="31"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="176" y="549" width="51" height="31"/>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="176" y="349" width="51" height="31"/>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="176" y="749" width="51" height="31"/>
+                                </variation>
+                                <connections>
+                                    <action selector="autoBackupToggled:" destination="vXZ-lx-hvc" eventType="valueChanged" id="TXa-Ob-EvA"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="clip" adjustsLetterSpacingToFitWidth="YES" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmO-7L-fdh">
+                                <rect key="frame" x="248" y="521" width="105" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="XSU-Jk-EEc"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="AUTOBACKUP">
+                                        <attributes>
+                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <font key="NSFont" size="17" name="HelveticaNeue-UltraLight"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="XSU-Jk-EEc"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="148" y="521" width="105" height="20"/>
+                                    <mask key="constraints">
+                                        <include reference="XSU-Jk-EEc"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="148" y="721" width="105" height="20"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlY-Os-LoB">
+                                <rect key="frame" x="276" y="277" width="49" height="46"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="OF">
+                                        <attributes>
+                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <font key="NSFont" size="40" name="HelveticaNeue-UltraLight"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="176" y="277" width="49" height="46"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="clip" minimumFontSize="1" translatesAutoresizingMaskIntoConstraints="NO" id="7wa-oG-Xaq">
+                                <rect key="frame" x="16" y="154" width="568" height="115"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="UPLOAD">
+                                        <attributes>
+                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <font key="NSFont" size="100" name="HelveticaNeue-UltraLight"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="154" width="368" height="115"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="clip" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dfy-9f-QrT">
+                                <rect key="frame" x="16" y="328" width="568" height="115"/>
+                                <accessibility key="accessibilityConfiguration" hint="totalAssets">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <attributedString key="attributedText">
+                                    <fragment content="TOTAL">
+                                        <attributes>
+                                            <font key="NSFont" size="100" name="HelveticaNeue-UltraLight"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="15" y="324" width="369" height="115"/>
+                                </variation>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" enabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItI-yc-1WU">
+                                <rect key="frame" x="197" y="103" width="206" height="46"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="BACKED UP">
+                                        <attributes>
+                                            <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <font key="NSFont" size="40" name="HelveticaNeue-UltraLight"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="97" y="100" width="206" height="46"/>
+                                </variation>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Wxu-9Z-v2L" firstAttribute="top" secondItem="dfy-9f-QrT" secondAttribute="bottom" constant="10" id="1gI-d9-wdd"/>
+                            <constraint firstAttribute="centerX" secondItem="Wxu-9Z-v2L" secondAttribute="centerX" id="637-9s-OaM"/>
+                            <constraint firstAttribute="centerX" secondItem="ItI-yc-1WU" secondAttribute="centerX" id="HFv-Iw-dMR"/>
+                            <constraint firstItem="ItI-yc-1WU" firstAttribute="top" secondItem="y5b-F2-7sa" secondAttribute="bottom" constant="73" id="IDU-eP-Ydr"/>
+                            <constraint firstItem="y5b-F2-7sa" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="IbD-Ic-z0E"/>
+                            <constraint firstAttribute="centerX" secondItem="7wa-oG-Xaq" secondAttribute="centerX" id="JA9-M0-TaW"/>
+                            <constraint firstAttribute="centerX" secondItem="dfy-9f-QrT" secondAttribute="centerX" id="JNw-mC-oTt"/>
+                            <constraint firstItem="y5b-F2-7sa" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="STJ-db-ues"/>
+                            <constraint firstAttribute="centerX" secondItem="y5b-F2-7sa" secondAttribute="centerX" id="cw9-Jx-YDC"/>
+                            <constraint firstAttribute="centerX" secondItem="xlY-Os-LoB" secondAttribute="centerX" id="eqQ-FZ-xP5"/>
+                            <constraint firstItem="y5b-F2-7sa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="jZJ-QH-8JA"/>
+                            <constraint firstItem="JvV-gP-J2J" firstAttribute="top" secondItem="DmO-7L-fdh" secondAttribute="bottom" constant="8" id="q0b-5k-cs0"/>
+                            <constraint firstAttribute="centerX" secondItem="JvV-gP-J2J" secondAttribute="centerX" id="qZV-8o-Ub1"/>
+                            <constraint firstAttribute="centerX" secondItem="DmO-7L-fdh" secondAttribute="centerX" id="r5J-8w-lQM"/>
+                            <constraint firstItem="7wa-oG-Xaq" firstAttribute="top" secondItem="ItI-yc-1WU" secondAttribute="bottom" constant="5" id="rSe-HM-UgI"/>
+                            <constraint firstItem="xlY-Os-LoB" firstAttribute="top" secondItem="7wa-oG-Xaq" secondAttribute="bottom" constant="8" id="rrk-9f-lA6"/>
+                            <constraint firstItem="dfy-9f-QrT" firstAttribute="top" secondItem="xlY-Os-LoB" secondAttribute="bottom" constant="5" id="uWo-yv-5nw"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="JvV-gP-J2J" secondAttribute="bottom" constant="20" id="vRB-Zz-Gna"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="autoBackupSwitch" destination="JvV-gP-J2J" id="4uq-ZR-Hfw"/>
+                        <outlet property="backupButton" destination="Wxu-9Z-v2L" id="4oU-ap-8eT"/>
+                        <outlet property="progressView" destination="y5b-F2-7sa" id="rrp-Fw-EjF"/>
+                        <outlet property="totalAssetsLabel" destination="dfy-9f-QrT" id="HMg-nU-37a"/>
+                        <outlet property="uplodadedAssetsLabel" destination="7wa-oG-Xaq" id="dGR-Ld-w90"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="838" y="156"/>
         </scene>
     </scenes>
 </document>
