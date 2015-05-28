@@ -31,14 +31,16 @@
 
 @property (nonatomic, retain) NSDateFormatter *dateFormat;
 
-@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-@property (weak, nonatomic) IBOutlet UISwitch *autoBackupSwitch;
-@property (weak, nonatomic) IBOutlet UIButton *backupButton;
-@property (weak, nonatomic) IBOutlet UILabel *uplodadedAssetsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *totalAssetsLabel;
+@property (strong, nonatomic) IBOutlet UIProgressView *progressView;
+@property (strong, nonatomic) IBOutlet UISwitch *autoBackupSwitch;
+@property (strong, nonatomic) IBOutlet UIButton *backupButton;
+@property (strong, nonatomic) IBOutlet UILabel *uplodadedAssetsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *totalAssetsLabel;
 
 - (IBAction)initBackup:(id)sender;
 - (IBAction)autoBackupToggled:(id)sender;
+
+- (void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 
 @end
 

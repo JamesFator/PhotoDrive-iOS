@@ -21,10 +21,14 @@ In addition to that, there may be additional tweaking required in the
 Xcode Build Setting in order to get the app working with different devices.
 
 
+## What's New
+
+* Basic interface added.
+* Background sync implemented (Needs further testing)
+* Auto-Sync slider allows syncing as soon as the app is launched
+
 ## To Do
 
-* Add an interface.
-* Background refresh.
 * Customizable Google Drive folders to upload into.
 * Possibly add additional check to prevent overwriting and duplication.
 * See if there's a better way to cache what files were sent.

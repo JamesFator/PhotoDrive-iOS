@@ -12,6 +12,7 @@
 		1A13ABFE1A89748900EAA6D7 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A13ABFD1A89748900EAA6D7 /* GTMOAuth2ViewTouch.xib */; };
 		1A13AC011A8974B100EAA6D7 /* GTLDrive_Sources.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A13ABFF1A8974B100EAA6D7 /* GTLDrive_Sources.m */; };
 		1A13AC031A89752100EAA6D7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A13AC021A89752100EAA6D7 /* MobileCoreServices.framework */; };
+		1A539AD81AFD02E4007703E2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A539AD71AFD02E4007703E2 /* UIKit.framework */; };
 		1AB72BD71A89733E00BB2300 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB72BD61A89733E00BB2300 /* main.m */; };
 		1AB72BDA1A89733E00BB2300 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB72BD91A89733E00BB2300 /* AppDelegate.m */; };
 		1AB72BDD1A89733E00BB2300 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB72BDC1A89733E00BB2300 /* ViewController.m */; };
@@ -60,6 +61,7 @@
 		1A13ABFF1A8974B100EAA6D7 /* GTLDrive_Sources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLDrive_Sources.m; sourceTree = "<group>"; };
 		1A13AC001A8974B100EAA6D7 /* GTLDrive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLDrive.h; sourceTree = "<group>"; };
 		1A13AC021A89752100EAA6D7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		1A539AD71AFD02E4007703E2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1AB72BD11A89733E00BB2300 /* Photo Drive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Drive.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB72BD51A89733E00BB2300 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1AB72BD61A89733E00BB2300 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A539AD81AFD02E4007703E2 /* UIKit.framework in Frameworks */,
 				1AFC10D71A897EB600D7D0CF /* AssetsLibrary.framework in Frameworks */,
 				1AFC10D51A8978AF00D7D0CF /* libGTLTouchStaticLib.a in Frameworks */,
 				1A13AC031A89752100EAA6D7 /* MobileCoreServices.framework in Frameworks */,
@@ -93,6 +96,7 @@
 		1AB72BC81A89733E00BB2300 = {
 			isa = PBXGroup;
 			children = (
+				1A539AD71AFD02E4007703E2 /* UIKit.framework */,
 				1AFC10D61A897EB600D7D0CF /* AssetsLibrary.framework */,
 				1AFC10C61A8978A600D7D0CF /* GTL.xcodeproj */,
 				1A13AC021A89752100EAA6D7 /* MobileCoreServices.framework */,
@@ -175,12 +179,17 @@
 		1AB72BC91A89733E00BB2300 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = JamesFator;
 				TargetAttributes = {
 					1AB72BD01A89733E00BB2300 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = W254R8M4X7;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -374,10 +383,10 @@
 		1AB72BF51A89733E00BB2300 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Photo Drive/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -393,10 +402,10 @@
 		1AB72BF61A89733E00BB2300 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Photo Drive/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (

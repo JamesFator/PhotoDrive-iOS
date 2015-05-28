@@ -199,7 +199,7 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
                     }
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
+                dispatch_sync(dispatch_get_main_queue(), ^{
                     [_totalAssetsLabel setText:[_numAssets stringValue]];
                     [_uplodadedAssetsLabel setText:[_numUploadedAssets stringValue]];
                     NSLog(@"Progress: %f", _numUploadedAssets.doubleValue / _numAssets.doubleValue);
@@ -234,7 +234,7 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
             break;
         }
         
-        int maxThreads = MIN(5, [_assetQueue count]);
+        int maxThreads = MIN(2, [_assetQueue count]);
         _threads = [NSNumber numberWithInt:maxThreads];
         
         @synchronized(_threads) {
@@ -344,4 +344,43 @@ static NSString *const kClientSecret = @"CLIENT_SECRET";
         [_defaults synchronize];
     }
 }
+
+#pragma mark - Background Fetch
+
+- (void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    if (_autoBackupOn) {
+        @synchronized(self) {
+            if (_isSyncing) {
+                NSLog(@"Background sync stopped. Already syncing.");
+                completionHandler(UIBackgroundFetchResultNewData);
+                return;
+            }
+        }
+        [self initBackup:self];
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            // Cut out in 29 seconds by default because we can't do more than that
+            for (int i = 0; i < 29; i++) {
+                [NSThread sleepForTimeInterval:1.0];
+                @synchronized(self) {
+                    if (!_isSyncing) {
+                        break;
+                    }
+                }
+            }
+            if ([_numUploadedAssets intValue] == [_numAssets intValue]) {
+                NSLog(@"Background sync successful.");
+                completionHandler(UIBackgroundFetchResultNewData);
+            } else {
+                NSLog(@"Background sync could not upload all new files in this one pass through.");
+                completionHandler(UIBackgroundFetchResultNewData);
+            }
+        });
+    } else {
+        NSLog(@"Background sync not enabled.");
+        completionHandler(UIBackgroundFetchResultNoData);
+    }
+}
+
 @end
